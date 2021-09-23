@@ -1,0 +1,78 @@
+{
+    "nodes": [
+      {
+        "id": 1,
+        "name": "A",
+        "xpos": 10,
+        "ypos": 50,
+        "total": 200
+      },
+      {
+        "id": 2,
+        "name": "B",
+        "xpos": 300,
+        "ypos": 220,
+        "total": 100
+      },
+      {
+        "id": 3,
+        "name": "C",
+        "xpos": 150,
+        "ypos": 30,
+        "total": 1200
+      },
+      {
+        "id": 4,
+        "name": "D",
+        "xpos": 90,
+        "ypos": 450,
+        "total": 30
+      },
+      {
+        "id": 5,
+        "name": "E",
+        "xpos": 410,
+        "ypos": 350,
+        "total": 600
+      },
+      {
+        "id": 6,
+        "name": "F",
+        "xpos": 410,
+        "ypos": 350,
+        "total": 600
+      }
+    ],
+    "links": [
+      {
+        "source": 1,
+        "target": 2,
+        "type": "import",
+        "volume": 20
+      },
+      {
+        "source": 1,
+        "target": 5,
+        "type": "import",
+        "volume": 10
+      },
+      {
+        "source": 2,
+        "target": 3,
+        "type": "export",
+        "volume": 30
+      },
+      {
+        "source": 3,
+        "target": 4,
+        "type": "export",
+        "volume": 15
+      },
+      {
+        "source": 6,
+        "target": 3,
+        "type": "export",
+        "volume": 40
+      }
+    ]
+  }
