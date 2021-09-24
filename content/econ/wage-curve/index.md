@@ -8,8 +8,17 @@ It has been hypothesised that "a worker who is employed in an area of high unemp
 
 <!--more-->
 
-# <a name="Inline"></a>Inline elements
+## Background
 
-Sint ea anim ipsum ad commodo cupidatat do **exercitation** incididunt et minim ad labore sunt. Minim deserunt labore laboris velit nulla incididunt ipsum nulla. Ullamco ad laborum ea qui et anim in laboris exercitation tempor sit officia laborum reprehenderit culpa velit quis. **Consequat commodo** reprehenderit duis [irure](#!) esse esse exercitation minim enim Lorem dolore duis irure. Nisi Lorem reprehenderit ea amet excepteur dolor excepteur magna labore proident voluptate ipsum. Reprehenderit ex esse deserunt aliqua ea officia mollit Lorem nulla magna enim. Et ad ipsum labore enim ipsum **cupidatat consequat**. Commodo non ea cupidatat magna deserunt dolore ipsum velit nulla elit veniam nulla eiusmod proident officia.
+This is a thing that economists have claimed -- their claims properly belong in this section.
 
 ![Super wide](http://www.placecage.com/c/888/666)
+
+## Data sources
+To perform a proper comparison, it's necessary to compare people in the _same profession_ across geographical areas with differing unemployment rates. Therefore we cannot use the [personal earnings](https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/6524.0.55.0022011-2015?OpenDocument) data provided by the ABS, because it does not provide the occupation breakdown.
+
+Instead we will use the series [5673.0.55.003 - Wage and Salary Earner Statistics for Small Areas](https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/5673.0.55.0032005-06%20to%202010-11?OpenDocument) which gives the number of wage earners and their income, for each major ANZSCO group, for each small area (LGA/SA2).
+
+
+To get (un)employment numbers to compare, we will use the [Small Area Labour Market estimates data](https://lmip.gov.au/default.aspx?LMIP/Downloads/SmallAreaLabourMarketsSALM/Estimates), which records labour force participation at both the SA2 and LGA levels.
+

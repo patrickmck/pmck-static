@@ -1,5 +1,5 @@
 ---
-title: 'All-time median human birthday'
+title: 'The middle human'
 date: 2021-09-10
 weight: 1
 ---
@@ -170,7 +170,6 @@ It's clear that this method only imperfectly reproduces the data upon which Haub
 <br><br>
 
 ###### References
-<br>
 
 [^1]: Haub, C (1995) _How many people have ever lived on earth?_
 [^2]: Population Reference Bureau (2020). URL: "https://scorecard.prb.org/howmanypeoplehaveeverlivedonearth/"

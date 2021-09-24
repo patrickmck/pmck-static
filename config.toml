@@ -1,6 +1,6 @@
 baseURL = "/"
-languageCode = "en-us"
-title = "Hugo Whisper Theme"
+languageCode = "en-uk"
+title = "pmck"
 themesDir = "themes"
 theme = "hugo-whisper-theme"
 
