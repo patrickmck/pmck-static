@@ -2,15 +2,21 @@
 
 const make_li_trade_network = data => {
 
-    const fig_width = 500
-    const fig_height = 500
+    const fig_width = 800
+    const fig_height = 600
 
-    let roleScale = d3.scaleOrdinal()
-        .range(["#75739F", "#41A368", "#FE9922"])
-    // let sampleData = d3.range(100).map((d,i) => ({r: 50 - i * .5, v: 5*d}))
-    // let sampleData = data.links.map(link => ({r: link.volume, v: link.volume*10}))
+    let roleScale = d3.scaleOrdinal(d3.schemeTableau10)
+
     
-    let global_total = data.nodes.reduce((a,x) => a + x.total, 0)
+    let trade_type = d3.select('#li-trade-type-input').node().value
+    update_trade_type = () => {trade_type = d3.select('#li-trade-type-input').node().value; console.log(trade_type);}
+    d3.select("#li-trade-type-input").on('change', update_trade_type)
+
+    let trade_year = d3.select('#li-trade-year-input').node().value
+    update_trade_year = () => {trade_year = d3.select('#li-trade-year-input').node().value; console.log(trade_year);}
+    d3.select("#li-trade-year-input").on('input', update_trade_year)
+    
+    let global_total = data.nodes.reduce((a,x) => a + x.export_total, 0)
     
 
     // Expecting trade volumes to take arbitrary non-negative values, construct scales
@@ -18,10 +24,10 @@ const make_li_trade_network = data => {
     let bubble_min_size = 5
     let bubble_max_size = 50
     let bubblescale = d3.scaleLinear()
-        .domain([Math.min(...data.nodes.map(n => n.total)), Math.max(...data.nodes.map(n => n.total))])
+        .domain([Math.min(...data.nodes.map(n => n.export_total)), Math.max(...data.nodes.map(n => n.export_total))])
         .range([bubble_min_size, bubble_max_size]);
     
-    let edgeline_min_size = 1
+    let edgeline_min_size = 0.1
     let edgeline_max_size = 10
     let edgelinescale = d3.scaleLinear()
         .domain([Math.min(...data.links.map(l => l.volume)), Math.max(...data.links.map(l => l.volume))])
@@ -29,7 +35,7 @@ const make_li_trade_network = data => {
 
     let sampleData = data.nodes.map(node => ({
         id: node.id,
-        r: bubblescale(node.total),
+        r: bubblescale(node.export_total),
         name: node.name
     }))
 
@@ -66,7 +72,7 @@ const make_li_trade_network = data => {
 
     // sim.force("link").links(edgeData)
 
-    let fig = d3.select("#li-trade-network-fig")
+    let fig = d3.select("#li-trade-fig")
         .append('svg')
         .attr('width', fig_width)
         .attr('height', fig_height)
@@ -91,9 +97,9 @@ const make_li_trade_network = data => {
 
     nodeEnter.append("text")
         .style("text-anchor", "middle")
-        .attr("y", d => d.r-2)
-        .attr("x", d => d.r+5)
-        .attr("font-size", "0.6em")
+        .attr("y", d => d.r-5)
+        .attr("x", d => d.r+15)
+        .attr("font-size", "0.8em")
         .text(d => d.name);
 
 
