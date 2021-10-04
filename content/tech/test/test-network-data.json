@@ -5,42 +5,70 @@
       "name": "A",
       "xpos": 10,
       "ypos": 50,
-      "total": 200
+      "total": {
+        "2015": 200,
+        "2016": 300
+      }
     },
     {
       "id": 2,
       "name": "B",
       "xpos": 300,
       "ypos": 220,
-      "total": 100
+      "total": {
+        "2015": 100,
+        "2016": 120
+      }
     },
     {
       "id": 3,
       "name": "C",
       "xpos": 150,
       "ypos": 30,
-      "total": 1200
+      "total": {
+        "2015": 1200,
+        "2016": 8
+      }
     },
     {
       "id": 4,
       "name": "D",
       "xpos": 90,
       "ypos": 450,
-      "total": 30
+      "total": {
+        "2015": 360,
+        "2016": 0
+      }
     },
     {
       "id": 5,
       "name": "E",
       "xpos": 410,
       "ypos": 350,
-      "total": 600
+      "total": {
+        "2015": 600,
+        "2016": 900
+      }
     },
     {
       "id": 6,
       "name": "F",
       "xpos": 410,
-      "ypos": 350,
-      "total": 600
+      "ypos": 300,
+      "total": {
+        "2015": 600,
+        "2016": 650
+      }
+    },
+    {
+      "id": 7,
+      "name": "G",
+      "xpos": 470,
+      "ypos": 30,
+      "total": {
+        "2015": 0,
+        "2016": 100
+      }
     }
   ],
   "links": [
@@ -48,31 +76,55 @@
       "source": 1,
       "target": 2,
       "type": "import",
-      "volume": 20
+      "volume": {
+        "2015": 50,
+        "2016": 20
+      }
     },
     {
       "source": 1,
       "target": 5,
       "type": "import",
-      "volume": 10
+      "volume": {
+        "2015": 30,
+        "2016": 20
+      }
     },
     {
       "source": 2,
       "target": 3,
       "type": "export",
-      "volume": 30
+      "volume": {
+        "2015": 25,
+        "2016": 45
+      }
     },
     {
       "source": 3,
       "target": 4,
       "type": "export",
-      "volume": 15
+      "volume": {
+        "2015": 15,
+        "2016": 10
+      }
     },
     {
       "source": 6,
       "target": 3,
       "type": "export",
-      "volume": 40
+      "volume": {
+        "2015": 10,
+        "2016": 65
+      }
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "type": "export",
+      "volume": {
+        "2015": 10,
+        "2016": 15
+      }
     }
   ]
 }

@@ -18,6 +18,11 @@ Just for testing d3 visualisations, for now ...
 
 ###### Network diagram (basic)
 
+<div>
+    <input type='range', id='test-net-year-input', min='2015', max='2016', step='1'>
+    <!-- li-trade-network.js also handles updating the displayed year -->
+    <div id='test-net-year-input-display'></div>
+</div>
 <!-- <div id='netviz'></div> -->
 <div id='test-network-fig'></div>
 
@@ -30,7 +35,7 @@ Just for testing d3 visualisations, for now ...
 
 ###### Bar chart (basic)
 <!-- Create a div where the graph will take place -->
-<div id='test-barchart-fig'></div>
+<!-- <div id='test-barchart-fig'></div> -->
 
 <!-- Calling the script to populate #barviz -->
-<script src="/scripts/test-barchart.js"></script><br>
+<!-- <script src="/scripts/test-barchart.js"></script><br> -->
