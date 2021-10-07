@@ -28,36 +28,12 @@ Initially framed as an opportunity to explore the UN ComTrade data and learn dat
     <label class='toggle'>
         <input type='checkbox', id='li-trade-type-input'>
         <span class='toggle-slider' id='li-trade-type-slider'></span>
-        <script>
-            let toggle=1
-            function update_li_trade_type() {
-                toggle = toggle * -1
-                let trade_type = (toggle > 0) ? 'Exports' : 'Imports'
-                // console.log(trade_type)
-            }
-            update_li_trade_type()
-            d3.select("#li-trade-type-input").on('change', update_li_trade_type);
-        </script>
     </label>
     </td>
     <td>
     <input type='range', id='li-trade-year-input', min='2015', max='2019', step='1'>
+    <!-- li-trade-network.js also handles updating the displayed year -->
     <div id='li-trade-year-input-display'></div>
-    <!-- script to select and update the displayed year input -->
-    <script>
-        function update_li_trade_year() {
-            d3.selectAll('.li-trade-year-display')
-                .remove()
-            d3.select('#li-trade-year-input-display')
-                .append('text')
-                .attr('class', 'li-trade-year-display')
-                .attr("text-anchor", "middle")
-                .text(d3.select('#li-trade-year-input').node().value)
-        }
-        update_li_trade_year();
-        d3.select("#li-trade-year-input").on('input', update_li_trade_year);
-    </script>
-    <!-- <output for="li-trade-year-input" id="li-trade-year-output">2015</output> -->
     </td>
     </tr></table>
 </div>
