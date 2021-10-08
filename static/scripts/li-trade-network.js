@@ -1,6 +1,8 @@
 
 const fig_width = 800
 const fig_height = 500
+const legend_height = 100
+const legend_buffer_height = 20
 let transition_duration = 500
 
 let trade_year = d3.select('#li-trade-year-input').node().value;
@@ -49,6 +51,40 @@ let fig = d3.select("#li-trade-fig")
     .attr('width', fig_width)
     .attr('height', fig_height)
 
+d3.select("#li-trade-fig").append('svg').attr('height', legend_buffer_height).attr('width', fig_width)
+// d3.select("#li-trade-fig").append('text').text('Legend:')
+
+let legend = d3.select("#li-trade-fig")
+    .append('details')
+    .attr('class', 'legend')
+    // .append('summary').text('Legend:')
+legend.append('summary').text('Legend:')
+
+let legend_content = legend
+    .append('svg')
+    .attr('class', 'legend')
+    .attr('y', fig_height)
+    .attr('width', fig_width)
+    .attr('height', legend_height)
+legend_content.selectAll('circle.legenditem')
+    .data(['exporter', 'mixed', 'importer'])
+    .enter()
+    .append('circle')
+    .attr('class', 'legenditem')
+    .attr('fill', (d,i) => d3.interpolateRdYlBu(1-0.5*(i)))
+    .attr('r', 0.2*legend_height)
+    .attr('cx', (d,i) => 0.25*fig_width*(1+i))
+    .attr('cy', 0.1*fig_height)
+legend_content.selectAll('text.legendtext')
+    .data(['exporter', 'mixed', 'importer'])
+    .enter()
+    .append('text')
+    .text(d => d)
+    .attr('class', 'legendtext')
+    .attr('x', (d,i) => 0.25*fig_width*(1+i))
+    .attr('y', 0.1*fig_height+40)
+
+console.log(legend_content)
 // Set up tooltip div to be populated on mouseover
 let tooltip = d3.select("#li-trade-fig")
     .append('div')
@@ -70,9 +106,10 @@ let mouseover = function(d) {
     //   .style("opacity", 1)
 }
 let mousemove = function(d) {
+    let legend_offset = (legend.property('open') ? legend_height : 0) + legend_buffer_height
     tooltip
         .html(make_node_tooltip_content(this))
-        .style('transform', `translate(${d3.mouse(this)[0]+10}px, ${d3.mouse(this)[1]+10-fig_height}px)`)
+        .style('transform', `translate(${d3.mouse(this)[0]+10}px, ${d3.mouse(this)[1]-10-fig_height-legend_offset}px)`)
 }
 let mouseleave = function(d) {
     tooltip
