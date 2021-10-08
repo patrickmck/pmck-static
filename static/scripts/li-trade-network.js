@@ -84,7 +84,6 @@ legend_content.selectAll('text.legendtext')
     .attr('x', (d,i) => 0.25*fig_width*(1+i))
     .attr('y', 0.1*fig_height+40)
 
-console.log(legend_content)
 // Set up tooltip div to be populated on mouseover
 let tooltip = d3.select("#li-trade-fig")
     .append('div')
@@ -103,7 +102,9 @@ let mouseover = function(d) {
       .style("opacity", 1)
     d3.select(this)
       .style("stroke", "black")
-    //   .style("opacity", 1)
+    d3.selectAll('line.netlink')
+      .filter(d => d.id.includes(this.getAttribute('name')))
+      .style('stroke', d => d.source.name==this.getAttribute('name') ? 'hotpink' : 'limegreen')
 }
 let mousemove = function(d) {
     let legend_offset = (legend.property('open') ? legend_height : 0) + legend_buffer_height
@@ -116,6 +117,9 @@ let mouseleave = function(d) {
         .style("opacity", 0)
     d3.select(this)
         .style("stroke", "none")
+    d3.selectAll('line.netlink')
+        .filter(d => d.id.includes(this.getAttribute('name')))
+        .style('stroke', 'black')
 }
 
 // Function to generate tooltip html content, given a node selection
@@ -131,7 +135,7 @@ let make_node_tooltip_content = node => {
 }
 
 let force_simulation = d3.forceSimulation()
-    .force("charge", d3.forceManyBody().strength(-1000))
+    .force("charge", d3.forceManyBody().strength(-500))
     // .force("center", d3.forceCenter().x(300).y(300))
     .force("collision", d3.forceCollide().radius(d => 1.2*(d.r)))
     .force("x", d3.forceX().x(d => d.xpos))
@@ -157,7 +161,21 @@ let node_data;
 let edge_data;
 let findNode;
 
-d3.select("#li-trade-year-input").on('input', update_li_network)
+update_trade_year_display = () => {
+    d3.selectAll('.li-trade-year-display')
+        .remove()
+    d3.select('#li-trade-year-input-display')
+        .append('text')
+        .attr('class', 'li-trade-year-display')
+        .attr("text-anchor", "middle")
+        .text(trade_year)
+}
+update_trade_year_display()
+
+d3.select("#li-trade-year-input").on('input', () => {
+    update_li_network()
+    update_trade_year_display()
+})
 
 function update_li_network() {
     // console.log(data)

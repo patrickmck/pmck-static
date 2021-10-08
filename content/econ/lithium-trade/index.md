@@ -31,7 +31,7 @@ Initially framed as an opportunity to explore the UN ComTrade data and learn dat
     </label>
     </td>
     <td>
-    <input type='range', id='li-trade-year-input', min='2015', max='2019', step='1'>
+    <input type='range', id='li-trade-year-input', min='2015', max='2018', step='1'>
     <!-- li-trade-network.js also handles updating the displayed year -->
     <div id='li-trade-year-input-display'></div>
     </td>
