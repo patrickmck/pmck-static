@@ -8,14 +8,15 @@ let data = {nodes: null, links: null};
 
 let product_code = '333444'
 
-fetch(`https://frklvrq4cj.execute-api.ap-southeast-2.amazonaws.com/testing/product?hs_code=${product_code}`, {method: "GET"})
-    .then(response => response.json())
-    .then(d => {
-        console.log(d.statusCode)
-        data = JSON.parse(d.body)
-        update_li_network()
-    })
-    .catch(error => console.log(error))
+fetch(`https://frklvrq4cj.execute-api.ap-southeast-2.amazonaws.com/testing/product?hs_code=${product_code}`,
+    {method: "GET", cache: 'force-cache'})
+        .then(response => response.json())
+        .then(d => {
+            console.log(`API returned status ${d.statusCode}`)
+            data = JSON.parse(d.body)
+            update_li_network()
+        })
+        .catch(error => console.log(error))
 
 
 // Expecting trade volumes to take arbitrary non-negative values, construct scales
@@ -48,6 +49,50 @@ let fig = d3.select("#li-trade-fig")
     .attr('width', fig_width)
     .attr('height', fig_height)
 
+// Set up tooltip div to be populated on mouseover
+let tooltip = d3.select("#li-trade-fig")
+    .append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0)
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
+    .style("display", "inline-block")
+
+// Three function that change the tooltip when user hover / move / leave a cell
+let mouseover = function(d) {
+    tooltip
+      .style("opacity", 1)
+    d3.select(this)
+      .style("stroke", "black")
+    //   .style("opacity", 1)
+}
+let mousemove = function(d) {
+    tooltip
+        .html(make_node_tooltip_content(this))
+        .style('transform', `translate(${d3.mouse(this)[0]+10}px, ${d3.mouse(this)[1]+10-fig_height}px)`)
+}
+let mouseleave = function(d) {
+    tooltip
+        .style("opacity", 0)
+    d3.select(this)
+        .style("stroke", "none")
+}
+
+// Function to generate tooltip html content, given a node selection
+let make_node_tooltip_content = node => {
+    let this_node = data.nodes.find(d => d.name==node.getAttribute('name'))
+    let export_volume = Math.round(this_node.volume[trade_year] * this_node.type[trade_year])
+    let import_volume = Math.round(this_node.volume[trade_year] * (1-this_node.type[trade_year]))
+    let output_html = `<b>${this_node.name}</b><br/>\
+    Imports: $${import_volume.toLocaleString('en-US')}<br/>\
+    Exports: $${export_volume.toLocaleString('en-US')}
+    `
+    return output_html
+}
+
 let force_simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody().strength(-1000))
     // .force("center", d3.forceCenter().x(300).y(300))
@@ -62,8 +107,8 @@ function updateNetworkSim() {
         .attr("cx", d => Math.min(Math.max(d.x, d.r), fig_width - d.r))
         .attr("cy", d => Math.min(Math.max(d.y, d.r), fig_height - d.r))
     d3.selectAll("text.nodetxt")
-        .attr("x", d => Math.min(Math.max(d.x, d.r), fig_width - 1.5*d.r))
-        .attr("y", d => Math.min(Math.max(d.y, d.r), fig_height - 1.5*d.r)+20)
+        .attr("x", d => Math.min(Math.max(d.x, d.r), fig_width - d.r))
+        .attr("y", d => Math.min(Math.max(d.y, d.r), fig_height - d.r)+20)
     d3.selectAll("line.netlink")
         .attr("x1", d => Math.min(Math.max(d.source.x, d.source.r), fig_width - d.source.r))
         .attr("x2", d => Math.min(Math.max(d.target.x, d.target.r), fig_width - d.target.r))
@@ -141,8 +186,12 @@ function update_li_network() {
     }, {})
     
 
-    // Construct edge data similar to nodes, but edges only have volume
-    // when source and target nodes both have non-zero radius
+    // Construct edge data similar to nodes, but edges show up when their
+    // source and target nodes both have non-zero radius and their volume
+    // is above a given level
+    show_edge_cutoff_level = 0.5
+    show_edge_cutoff = data.links.map(link => link.volume[trade_year]).sort((a,b) => a-b)[Math.floor(data.links.length*show_edge_cutoff_level)]
+    
     edge_data = data.links.reduce((accum, link) => {
         let source_node = findNode[link.source]
         let target_node = findNode[link.target]
@@ -150,7 +199,7 @@ function update_li_network() {
         // console.log(findNode)
         // console.log(source_node)
         // console.log(target_node)
-        let show_edge = (source_node.r * target_node.r) > 0
+        let show_edge = (source_node.r * target_node.r > 0) & (link.volume[trade_year] >= show_edge_cutoff)
         accum.push({
                 id: `${link.source}-${link.target}`,
                 source: source_node,
@@ -201,7 +250,11 @@ function update_li_network() {
                 return enter
                     .append('circle')
                     .attr('class', 'netnode')
-                    .attr('fill', d => d3.interpolateViridis(d.type))
+                    .attr('name', d => d.name)
+                    .attr('fill', d => d3.interpolateRdYlBu(d.type))
+                    .on("mouseover", mouseover)
+                    .on("mousemove", mousemove)
+                    .on("mouseleave", mouseleave)
             },
             (update) => {
                 return update
@@ -225,9 +278,7 @@ function update_li_network() {
                 return enter
                     .append('text')
                     .attr('class', 'nodetxt')
-                    // .attr('x', d => d.x)
-                    // .attr('y', d => d.y + d.r + 2)
-                    // .attr('fill', d => d3.interpolateViridis(d.type))
+                    .style('fill', d => d3.interpolateRdYlBu(d.type))
             },
             (update) => {
                 return update
