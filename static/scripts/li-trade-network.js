@@ -5,17 +5,36 @@ const legend_height = 100
 const legend_buffer_height = 20
 let transition_duration = 500
 
-let trade_year = d3.select('#li-trade-year-input').node().value;
+let trade_year_timer;
+let trade_year_timer_count = 0;
+let trade_year = '2015'
+d3.select('#li-trade-year-input').property('value', trade_year)//.node().value;
 let data = {nodes: null, links: null};
 
 let product_code = '333444'
+
+let animate_trade_year = () => {
+    // console.log(d3.now())
+    // let newyr = Math.floor(2015 + Math.random()*4)
+    trade_year++
+    d3.select('#li-trade-year-input').property('value', trade_year)
+    update_trade_year_display()
+    update_li_network()
+    // trade_year_timer_count++
+    if(trade_year == '2018') { trade_year_timer.stop() }
+}
 
 fetch(`https://frklvrq4cj.execute-api.ap-southeast-2.amazonaws.com/testing/product?hs_code=${product_code}`,
     {method: "GET", cache: 'force-cache'})
         .then(response => response.json())
         .then(d => {
+            // trade_year_timer = d3.interval(animate_trade_year, 1000)
             console.log(`API returned status ${d.statusCode}`)
             data = JSON.parse(d.body)
+            // Initialise the node/link scales once only
+            nodescale = bubblescaler(data)
+            linkscale = edgelinescaler(data)
+            // Update the network for the first time
             update_li_network()
         })
         .catch(error => console.log(error))
@@ -23,16 +42,24 @@ fetch(`https://frklvrq4cj.execute-api.ap-southeast-2.amazonaws.com/testing/produ
 
 // Expecting trade volumes to take arbitrary non-negative values, construct scales
 // for both bubbles (entity total volume) and links (pairwise volume)
-let bubble_min_size = 5
+let bubble_min_size = 10
 let bubble_max_size = 50
 let bubblescaler = data => d3.scaleLinear()
-    .domain([Math.min(...data.nodes.map(n => n.volume[trade_year])), Math.max(...data.nodes.map(n => n.volume[trade_year]))])
+    .domain([
+        // To highlight changes in volume over the years, need the scale to be from
+        // the minimum to the maximum volume attained by any country _for all years_
+        Math.min(...data.nodes.map(n => Math.min(...Object.values(n.volume)))),
+        Math.max(...data.nodes.map(n => Math.max(...Object.values(n.volume))))
+    ])
     .range([bubble_min_size, bubble_max_size]);
 
-let edgeline_min_size = 1
+let edgeline_min_size = 0.1
 let edgeline_max_size = 10
 let edgelinescaler = data => d3.scaleLinear()
-    .domain([Math.min(...data.links.map(l => l.volume[trade_year])), Math.max(...data.links.map(l => l.volume[trade_year]))])
+    .domain([
+        Math.min(...data.links.map(l => Math.min(...Object.values(l.volume)))),
+        Math.max(...data.links.map(l => Math.max(...Object.values(l.volume))))
+    ])
     .range([edgeline_min_size, edgeline_max_size]);
 
 // Nodes are assigned a "type" between 0 (importer) and 1 (exporter) so the colour
@@ -162,6 +189,7 @@ let edge_data;
 let findNode;
 
 update_trade_year_display = () => {
+    trade_year = d3.select('#li-trade-year-input').node().value
     d3.selectAll('.li-trade-year-display')
         .remove()
     d3.select('#li-trade-year-input-display')
@@ -173,16 +201,12 @@ update_trade_year_display = () => {
 update_trade_year_display()
 
 d3.select("#li-trade-year-input").on('input', () => {
-    update_li_network()
     update_trade_year_display()
+    update_li_network()
 })
 
 function update_li_network() {
     // console.log(data)
-    trade_year = d3.select('#li-trade-year-input').node().value
-
-    nodescale = bubblescaler(data)
-    linkscale = edgelinescaler(data)
 
     /**
     For lines to appear below circles, they have to be drawn first. To avoid
