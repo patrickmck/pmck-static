@@ -11,7 +11,8 @@ let trade_year = '2015'
 d3.select('#li-trade-year-input').property('value', trade_year)//.node().value;
 let data = {nodes: null, links: null};
 
-let product_code = '333444'
+let product_code = '283691' // Lithium carbonate; Lithium hydroxide is 282520
+let product_type = 1 // flips to -1 => product code flips to Lithium hydroxide
 
 let animate_trade_year = () => {
     // console.log(d3.now())
@@ -24,7 +25,7 @@ let animate_trade_year = () => {
     if(trade_year == '2018') { trade_year_timer.stop() }
 }
 
-fetch(`https://frklvrq4cj.execute-api.ap-southeast-2.amazonaws.com/testing/product?hs_code=${product_code}`,
+get_trade_data = () => fetch(`https://frklvrq4cj.execute-api.ap-southeast-2.amazonaws.com/testing/product?hs_code=${product_code}`,
     {method: "GET", cache: 'force-cache'})
         .then(response => response.json())
         .then(d => {
@@ -38,7 +39,7 @@ fetch(`https://frklvrq4cj.execute-api.ap-southeast-2.amazonaws.com/testing/produ
             update_li_network()
         })
         .catch(error => console.log(error))
-
+get_trade_data()
 
 // Expecting trade volumes to take arbitrary non-negative values, construct scales
 // for both bubbles (entity total volume) and links (pairwise volume)
@@ -205,6 +206,17 @@ d3.select("#li-trade-year-input").on('input', () => {
     update_li_network()
 })
 
+d3.select("#li-trade-type-input").on('input', () => {
+    product_type = -1 * product_type
+    product_code = (product_type > 0) ? '283691' : '282520'
+    console.log(`Product code: ${product_code}`)
+    d3.selectAll("circle.netnode").remove()
+    d3.selectAll("text.nodetxt").remove()
+    d3.selectAll("line.netlink").remove()
+    get_trade_data()
+})
+
+
 function update_li_network() {
     // console.log(data)
 
@@ -278,13 +290,15 @@ function update_li_network() {
         // console.log(findNode)
         // console.log(source_node)
         // console.log(target_node)
-        let show_edge = (source_node.r * target_node.r > 0) & (link.volume[trade_year] >= show_edge_cutoff)
-        accum.push({
+        if ((source_node != undefined) & (target_node != undefined)) {
+            let show_edge = (source_node.r * target_node.r > 0) & (link.volume[trade_year] >= show_edge_cutoff)
+            accum.push({
                 id: `${link.source}-${link.target}`,
                 source: source_node,
                 target: target_node,
                 strength: show_edge ? linkscale(link.volume[trade_year]) : 0
             })
+        }
         return accum
     }, [])
 
@@ -330,7 +344,6 @@ function update_li_network() {
                     .append('circle')
                     .attr('class', 'netnode')
                     .attr('name', d => d.name)
-                    .attr('fill', d => d3.interpolateRdYlBu(d.type))
                     .on("mouseover", mouseover)
                     .on("mousemove", mousemove)
                     .on("mouseleave", mouseleave)
@@ -348,6 +361,7 @@ function update_li_network() {
         )
         .transition()
         .duration(transition_duration)
+        .attr('fill', d => d3.interpolateRdYlBu(d.type))
         .attr('r', d => d.r)
 
     let textSelect = fig.selectAll("text.nodetxt")
@@ -373,6 +387,7 @@ function update_li_network() {
         .duration(transition_duration)
         .text(d => d.name)
         .style('font-size', '0.8em')
+        .style('display', d => d.r ? 'block' : 'none')
 
     // Reset the force simulation to take account of the new data
     force_simulation.force('x').initialize(node_data)

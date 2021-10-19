@@ -1,69 +1,48 @@
 ---
-title: 'Loan Calculator [proto]'
+title: 'First Home Helper'
 date: 2021-09-15
 weight: 2
 ---
 
-The aim is to set up a simple guide and free calculator to help aspiring Australian first home owners. It will be predominantly content-focused, but there will need to be at least one calculator graphic embedded in the site. This page is testing whether Hugo + D3 alone will be able to receive input, do calculations and return outputs/graphics ...
+The aim is to set up a simple guide and free calculator to help aspiring Australian first home owners. It will be predominantly content-focused, but there will need to be at least one calculator graphic embedded in the site.
 
 <!--more-->
 
-<!-- Load d3.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.15.0/d3.js"></script>
-<!-- <script src='https://d3js.org/d3.v6.js'></script> -->
+#### Motivation
 
-<br>
+If there was ever an Australian Dream, it would probably be the modest goal of owning your own home.
 
-<table>
-    <tr>
-        <td>Deposit ($)</td>
-        <td colspan=2>
-        <input type='number' id='test-input-deposit'>
-        </td>
-    </tr>
-    <tr>
-        <td>Total value ($)</td>
-        <td><input type='number' id='test-input-value'></td>
-        <td><button id='test-input-button1'>Calculate LVR</button></td>
-    </tr>
-    <tr><td colspan=3></td></tr>
-</table>
+Colour me surprised, then, when a friend informed me that there wasn't anywhere a simple, impartial guide detailing exactly what steps are involved in such a large and complicated purchase! 
 
-<div id='test-d3inputs-lvr'></div>
+A quick search online for "first home buyer guide" will return plenty of results:
+- From the federal government -- explaining the first home owner grant scheme 
+- From state and territory governments -- discussing stamp duty exemptions available
+- From banks, brokers or real estate companies -- ultimately trying to sell you something
 
-<br><br>
+Some of the third category cover the whole process end-to-end ([like this](https://www.huntergalloway.com.au/first-home-buyer-guide/)) but these are invariably for attracting customers first, helping people second. The nearest thing to an impartial source is the [MoneySmart - Buying A House](https://moneysmart.gov.au/buying-a-house) page, which steps through the whole process and doesn't assume any prior knowledge.
 
-<table>
-    <tr>
-        <td>Interest rate (%)</td>
-        <td colspan=2>
-        <input type='number' id='test-input-rate'>
-        </td>
-    </tr>
-    <tr>
-        <td>Loan period (years)</td>
-        <td><input type='number' id='test-input-period'></td>
-        <td><button id='test-input-button2'>Calculate payments</button></td>
-    </tr>
-    <tr><td colspan=3></td></tr>
-</table>
+#### User Story
 
-<div id='test-d3inputs-pmt'></div>
+The friend who pointed out this gap has recently been through the process of buying a first home, and incidentally works in financial counselling. They articulated the following four components as being necessary for a really helpful and comprehensive guide:
+
+1. **Guide**: series of articles/posts, one for each "step" in the process
+2. **Calculators**: tools which can be used on their own, or else embedded in other pages
+3. **Glossary**: detailed explanations of key terms, referenced by the first two components
+4. **Search**: navigate by keyword to pages in any of the first three components
+
+As an example of 1-3 working together, a user may arrive at the site having searched for "how to calculate LVR" and landed on the glossary page for "_Loan-Value Ratio_". This page would explain what the LVR is in the context of home buying, with a little calculator embedded in the bottom and links to steps in the process where this ratio is relevant. 
+
+#### Architecture
+
+Having long held web development in some disdain, my personal motivation here was to learn what actually goes into building a modern web app -- hopefully gaining some respect in the meantime for the people who do it for a living. In the spirit of "just pick one already" I chose React as the framework to write in.
+
+One key function of the web app will be to accept user-input parameters and return results/data. Rather than write an API, so far it's proved possible to handle all calculations in-app in pure Javascript. It is however starting to prove necessary to use a state manager like Redux, given that users may enter data anywhere in the app.
+
+#### ... ongoing ...
+
+This project started with the simple-but-bloated `create-react-app`. As of 15 October we are still writing the _content_ for the guide/lingo pages, so I am now re-writing the app from scratch using [Material UI](https://mui.com/getting-started/usage/), [ESBuild](https://esbuild.github.io/) and probably a simpler charting library like [Chart.js](https://www.chartjs.org/docs/latest/) or [Semiotic](https://semiotic.nteract.io/).
+
+Check back in soon!
 
 
-<!-- Calling the script to populate #barviz -->
-<script src="/scripts/test-inputs.js"></script><br>
-
-<hr><br>
-
-<details>
-<summary>
-<b>Conclusion</b>
-</summary>
-
-<p>Adding text content and routing to different pages is a lot easier than if we were to go with a fully-fledged web app written in React or whatever, since those are generally geared towards the 'single page' paradigm.</p>
-
-<p>However, it's hard keeping track of state using HTML+D3 alone and not clear how the "capture input node values" approach to interpreting inputs will scale when those inputs need to be sent to an API for processing.</p>
-
-<p>Next step, then, is to see whether the modern approach of "React front-end calling a web API for data updates" is a better fit for this problem.</p>
-</details>
+<br><hr><br>

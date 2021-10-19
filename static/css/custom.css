@@ -43,7 +43,7 @@
 
 .toggle-slider:after {
     position: absolute;
-    content: "Imports";
+    content: "Carbonate";
     height: 2em;
     width: 8em;
     left: 0.1em;
@@ -73,5 +73,5 @@ input:checked + .toggle-slider:after {
     -webkit-transform: translateX(8em);
     -ms-transform: translateX(8em);
     transform: translateX(8em);
-    content: "Exports";
+    content: "Hydroxide";
 }
