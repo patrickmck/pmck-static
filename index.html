@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pmck.au</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 60px; /* Top/bottom: 40px, Left/right: 60px */
+      background-color: #eeebd9;
+      box-sizing: border-box;
+    }
+
+    .container {
+      display: flex;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .left-column {
+      flex: 1;
+      max-width: 33.33%;
+      background-color: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    .right-column {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* .card {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+    } */
+
+    .card {
+        display: flex;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        overflow: hidden; /* Ensures border-radius applies to child elements like the image */
+        margin-bottom: 20px;
+        }
+
+    .card.left-image {
+        flex-direction: row;
+    }
+
+    .card.right-image {
+        flex-direction: row-reverse;
+    }
+
+    .card img {
+        width: 200px;
+        object-fit: cover;
+    }
+
+    .card-content {
+        padding: 24px;
+        flex: 1;
+    }
+
+    .card-content h3 {
+        margin-top: 0;
+    }
+
+
+    a {
+      color: #0077cc;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .social-links a {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+
+      .container {
+        flex-direction: column;
+      }
+
+      .left-column,
+      .right-column {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-column">
+      <h2>Patrick McKinlay</h2>
+      <p>I'm a data analyst with a background in maths and economics. My professional focus is in energy market simulation and modelling, but this page is simply for publishing my personal projects.</p>
+      <p>My interests include history, geography, languages and all things interdisciplinary. I'm not an artist, so these projects form a kind of creative expression in exploring these intellectual hobbies.</p>
+      <p>Links:</p>
+      <div class="social-links">
+        <ul>
+        <li><a href="https://github.com/patrickmck" target="_blank">GitHub</a></li>
+        <li><a href="https://linkedin.com/in/patrickmckinlay" target="_blank">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="right-column">
+    <div class="card right-image">
+        <img src="alhambra_tile.jpg" alt="Battery">
+        <div class="card-content">
+        <h3><a href="#">Battery Arbitrage</a></h3>
+        <p>Under very simple assumptions, how long would it take to pay off a grid-connected battery doing nothing more than charging when cheap and discharging when expensive?</p>
+        </div>
+    </div>
+
+    <div class="card left-image">
+        <img src="alhambra_tile.jpg" alt="Chart of History">
+        <div class="card-content">
+        <h3><a href="#">A New Chart of History</a></h3>
+        <p>Reproducing one of my favourite data visualisations, Joseph Priestley's <i>New Chart of History</i>, as a web app and minus the Classicist bias towards the Roman Empire.</p>
+        </div>
+    </div>
+
+    <div class="card right-image">
+        <img src="alhambra_tile.jpg" alt="Global Trade">
+        <div class="card-content">
+        <h3><a href="#">Global Trade Networks</a></h3>
+        <p>Using open data, visualising major bilateral trade flows across the world, for a wide array of product categories.</p>
+        </div>
+    </div>
+    </div>
+
+
+    <!-- <div class="right-column">
+      <div class="card">
+        <h3><a href="#">Battery Arbitrage</a></h3>
+        <p>Under very simple assumptions, how long would it take to pay off a grid-connected battery doing nothing more than charging when cheap and discharging when expensive?</p>
+      </div>
+      <div class="card">
+        <h3><a href="#">A New Chart of History</a></h3>
+        <p>Reproducing one of my favourite data visualisations, Joseph Priestley's <i>New Chart of History</i>, as a web app and minus the Classicist bias towards the Roman Empire.</p>
+      </div>
+      <div class="card">
+        <h3><a href="#">Global Trade Networks</a></h3>
+        <p>Using open data, visualising major bilateral trade flows across the world, for a wide array of product categories..</p>
+      </div>
+    </div> -->
+  </div>
+</body>
+</html>
