@@ -4,3 +4,10 @@
   status = 200
   force = true
   headers = {X-From = "Netlify"}
+
+[[redirects]]
+  from = "/trade-networks/*"
+  to = "https://shiny-cannoli-08d363.netlify.app/:splat"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
