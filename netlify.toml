@@ -1,5 +1,5 @@
 [[redirects]]
-  from = "/priestley-chart"
+  from = "/priestley-chart/*"
   to = "https://fastidious-madeleine-82031e.netlify.app/"
   status = 200
   force = true
