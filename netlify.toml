@@ -11,3 +11,10 @@
   status = 200
   force = true
   headers = {X-From = "Netlify"}
+
+[[redirects]]
+  from = "/battery-arbitrage/*"
+  to = "https://peppy-pithivier-7e36d3.netlify.app/:splat"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
